@@ -52,7 +52,7 @@ namespace Carbonara.Services.CalculationService
             var geoDistributionOfHashratePerPoolType = await _hashRatePerPoolService.GetHashRatePerPoolAsync();
 
             var countriesWithAvgCo2Emission = await _countryCo2EmissionService.GetCountriesCo2EmissionAsync();
-            result.AverageCO2EmissionPerCountry = countriesWithAvgCo2Emission;
+            result.AverageCo2EmissionPerCountryInKg = countriesWithAvgCo2Emission;
 
             var fullEnergyConsumptionPerTransactionInKWHPerYear =
                 await this.CalculateTheFullEnergyConsumptionPerTransactionPerYear(transactionBlockParameters);
@@ -177,8 +177,8 @@ namespace Carbonara.Services.CalculationService
             {
                 // Either use the user provided country for avg emissions or use avg emissions per country
                 var avgEmissionPerEnergyInGrams = String.IsNullOrEmpty(countryToUseForCo2EmissionAverage) ?
-                    countriesWithAvgCo2Emission.First(c => c.CountryCode == consumptionPerCountry.CountryCode).Co2Emission :
-                    countriesWithAvgCo2Emission.First(c => c.CountryCode == countryToUseForCo2EmissionAverage).Co2Emission;
+                    countriesWithAvgCo2Emission.First(c => c.CountryCode == consumptionPerCountry.CountryCode).Co2EmissionInKg :
+                    countriesWithAvgCo2Emission.First(c => c.CountryCode == countryToUseForCo2EmissionAverage).Co2EmissionInKg;
 
                 co2PerCountry.Add(
                     new Co2EmissionPerCountry

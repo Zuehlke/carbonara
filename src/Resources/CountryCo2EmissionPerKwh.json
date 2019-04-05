@@ -1,26 +1,26 @@
 [
     {
         "countryCode": "CA",
-        "co2Emission": 158.42
+        "co2EmissionInKg": 158.42
     },
     {
         "countryCode": "CN",
-        "co2Emission": 711.3686
+        "co2EmissionInKg": 711.3686
     },
     {
         "countryCode": "EU",
-        "co2Emission": 336.8498
+        "co2EmissionInKg": 336.8498
     },
     {
         "countryCode": "JP",
-        "co2Emission": 571.5443
+        "co2EmissionInKg": 571.5443
     },
     {
         "countryCode": "SG",
-        "co2Emission": 431.3
+        "co2EmissionInKg": 431.3
     },
     {
         "countryCode": "US",
-        "co2Emission": 489.4282
+        "co2EmissionInKg": 489.4282
     }
 ]

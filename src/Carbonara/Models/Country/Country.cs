@@ -4,6 +4,6 @@ namespace Carbonara.Models.Country
     {
         public string CountryCode { get; set; }
 
-        public decimal Co2Emission { get; set; } 
+        public decimal Co2EmissionInKg { get; set; } 
     }
 }
