@@ -5,7 +5,7 @@ namespace Carbonara.Models.Calculation
     public class TotalCalculationResult
     {
         public Dictionary<int, CalculationResult> CalculationPerYear;
-        public List<Country.Country> AverageEmissionPerCountry;
+        public List<Country.Country> AverageCO2EmissionPerCountry;
 
         public TotalCalculationResult()
         {

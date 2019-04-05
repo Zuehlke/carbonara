@@ -52,7 +52,7 @@ namespace Carbonara.Services.CalculationService
             var geoDistributionOfHashratePerPoolType = await _hashRatePerPoolService.GetHashRatePerPoolAsync();
 
             var countriesWithAvgCo2Emission = await _countryCo2EmissionService.GetCountriesCo2EmissionAsync();
-            result.AverageEmissionPerCountry = countriesWithAvgCo2Emission;
+            result.AverageCO2EmissionPerCountry = countriesWithAvgCo2Emission;
 
             var fullEnergyConsumptionPerTransactionInKWHPerYear =
                 await this.CalculateTheFullEnergyConsumptionPerTransactionPerYear(transactionBlockParameters);
@@ -72,8 +72,8 @@ namespace Carbonara.Services.CalculationService
 
                 var worldWideEmission = co2EmissionPerCountry.Sum(c => c.Co2Emission);
 
-                calculationResultForYear.EnergyConsumptionPerCountry = energyConsumptionPerCountry;
-                calculationResultForYear.FullCo2Emission = worldWideEmission;
+                calculationResultForYear.EnergyConsumptionPerCountryInKWh = energyConsumptionPerCountry;
+                calculationResultForYear.FullCo2EmissionInKg = worldWideEmission;
 
                 result.CalculationPerYear.Add(year, calculationResultForYear);
             }
@@ -131,11 +131,11 @@ namespace Carbonara.Services.CalculationService
             return energyConsumptionPerPoolPerTransactionInKwh;
         }
 
-        private List<EnergyConsumptionPerCountry> DistributeEnergyUsedByPoolsPerCountry(
+        private List<EnergyConsumptionPerCountryInKWh> DistributeEnergyUsedByPoolsPerCountry(
             List<EnergyConsumptionPerPool> energyConsumptionPerPool,
             List<PoolTypeHashRateDistribution> geoDistributionOfHashratePerPoolType)
         {
-            var energyConsumptionPerCountryPerTransactionInKwh = new List<EnergyConsumptionPerCountry>();
+            var energyConsumptionPerCountryPerTransactionInKwh = new List<EnergyConsumptionPerCountryInKWh>();
 
             foreach (var energyPerPool in energyConsumptionPerPool)
             {
@@ -148,15 +148,15 @@ namespace Carbonara.Services.CalculationService
 
                     if (consumptionPerCountry != null)
                     {
-                        consumptionPerCountry.EnergyConsumption += energyPerPool.EnergyConsumption * geoPoolDistribution.Percentage / 100m;
+                        consumptionPerCountry.EnergyConsumptionInKWh += energyPerPool.EnergyConsumption * geoPoolDistribution.Percentage / 100m;
                     }
                     else
                     {
                         energyConsumptionPerCountryPerTransactionInKwh.Add(
-                            new EnergyConsumptionPerCountry
+                            new EnergyConsumptionPerCountryInKWh
                             {
                                 CountryCode = geoPoolDistribution.CountryCode,
-                                EnergyConsumption = energyPerPool.EnergyConsumption * geoPoolDistribution.Percentage / 100m
+                                EnergyConsumptionInKWh = energyPerPool.EnergyConsumption * geoPoolDistribution.Percentage / 100m
                             }
                         );
                     }
@@ -167,7 +167,7 @@ namespace Carbonara.Services.CalculationService
         }
 
         private List<Co2EmissionPerCountry> TranslateEnergyEmissionPerCountryToCo2EmissionPerCountry(
-            List<EnergyConsumptionPerCountry> energyConsumptionPerCountry,
+            List<EnergyConsumptionPerCountryInKWh> energyConsumptionPerCountry,
             List<Country> countriesWithAvgCo2Emission,
             string countryToUseForCo2EmissionAverage)
         {
@@ -184,7 +184,7 @@ namespace Carbonara.Services.CalculationService
                     new Co2EmissionPerCountry
                     {
                         CountryCode = consumptionPerCountry.CountryCode,
-                        Co2Emission = consumptionPerCountry.EnergyConsumption * avgEmissionPerEnergyInGrams / 1000m
+                        Co2Emission = consumptionPerCountry.EnergyConsumptionInKWh * avgEmissionPerEnergyInGrams / 1000m
                     }
                 );
             }

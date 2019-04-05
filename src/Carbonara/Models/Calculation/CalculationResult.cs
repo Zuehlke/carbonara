@@ -4,8 +4,8 @@ namespace Carbonara.Models.Calculation
 {
     public class CalculationResult
     {
-        public decimal FullCo2Emission;
+        public decimal FullCo2EmissionInKg;
         
-        public List<EnergyConsumptionPerCountry> EnergyConsumptionPerCountry;
+        public List<EnergyConsumptionPerCountryInKWh> EnergyConsumptionPerCountryInKWh;
     }
 }
